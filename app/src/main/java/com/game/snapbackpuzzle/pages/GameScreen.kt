@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,7 +28,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
@@ -103,7 +101,9 @@ fun GameScreen(
             fontSize = 18.sp
         )
 
-        Spacer(modifier = Modifier.height(50.dp).fillMaxWidth())
+        Spacer(modifier = Modifier
+            .height(50.dp)
+            .fillMaxWidth())
 
         pieces.forEach { piece ->
             PuzzlePieceView(
@@ -130,6 +130,7 @@ fun GameScreen(
 
     }
 }
+
 @Composable
 fun FailedDialog(
     onConfirm: () -> Unit
