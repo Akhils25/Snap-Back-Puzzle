@@ -46,6 +46,7 @@ import com.game.snapbackpuzzle.R
 import com.game.snapbackpuzzle.model.PuzzlePiece
 import kotlinx.coroutines.delay
 import kotlin.math.abs
+import kotlin.math.min
 import kotlin.random.Random
 
 @Composable
@@ -273,10 +274,18 @@ fun PuzzlePieceView(
                         offsetY += dragAmount.y
                     },
                     onDragEnd = {
-                        val dx = abs(offsetX - piece.correctX)
-                        val dy = abs(offsetY - piece.correctY)
 
-                        if (dx < 40 && dy < 40) {
+                        if (piece.isPlaced) return@detectDragGestures
+
+                        val dx = offsetX - piece.correctX
+                        val dy = offsetY - piece.correctY
+
+                        val distance = kotlin.math.sqrt(dx * dx + dy * dy)
+
+                        val snapRadius =
+                            min(piece.bitmap.width, piece.bitmap.height) * 0.25f
+
+                        if (distance <= snapRadius) {
                             offsetX = piece.correctX
                             offsetY = piece.correctY
                             piece.isPlaced = true
@@ -287,6 +296,9 @@ fun PuzzlePieceView(
             }
     )
 }
+
+
+
 
 
 fun splitImage(
