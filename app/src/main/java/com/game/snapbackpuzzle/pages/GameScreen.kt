@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -51,19 +54,20 @@ fun GameScreen(
         }
     }
 
-    var timeLeft by remember { mutableIntStateOf(120) }
+    var timeLeft by remember { mutableIntStateOf(30) }
+    var showSuccessDialog by remember { mutableStateOf(false) }
+    var showFailedDialog by remember { mutableStateOf(false) }
 
     BackHandler {
         onGameFinished()
     }
 
-    // Timer
     LaunchedEffect(Unit) {
         while (timeLeft > 0) {
             delay(1000)
             timeLeft--
         }
-        onGameFinished()
+        showFailedDialog = true
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -72,8 +76,8 @@ fun GameScreen(
             text = "Time: ${timeLeft}s",
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(16.dp),
-            color = Color.White
+                .padding(top = 30.dp, bottom = 20.dp),
+            color = Color.Black
         )
 
         pieces.forEach { piece ->
@@ -81,11 +85,42 @@ fun GameScreen(
                 piece = piece,
                 onPlaced = {
                     if (pieces.all { it.isPlaced }) {
-                        onGameFinished()
+                        showSuccessDialog = true
                     }
                 }
             )
         }
+        if (showSuccessDialog) {
+            AlertDialog(
+                onDismissRequest = { },
+                title = { Text(text = "Congratulations!") },
+                text = { Text(text = "You have completed the puzzle!") },
+                confirmButton = {
+                    Button(onClick = {
+                        showSuccessDialog = false
+                        onGameFinished()
+                    }) {
+                        Text("OK")
+                    }
+                }
+            )
+        }
+        if (showFailedDialog) {
+            AlertDialog(
+                onDismissRequest = { },
+                title = { Text(text = "Sorry!") },
+                text = { Text(text = "You have Failed the puzzle!") },
+                confirmButton = {
+                    Button(onClick = {
+                        showFailedDialog = false
+                        onGameFinished()
+                    }) {
+                        Text("OK")
+                    }
+                }
+            )
+        }
+
     }
 }
 
