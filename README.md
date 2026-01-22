@@ -19,7 +19,6 @@ Dynamic Puzzle Generation – Supports splitting any image into a grid of pieces
 
 Composable UI – Built entirely using Jetpack Compose.
 
-Back Navigation – Pressing the back button returns to the previous screen.
 
 How It Works
 
