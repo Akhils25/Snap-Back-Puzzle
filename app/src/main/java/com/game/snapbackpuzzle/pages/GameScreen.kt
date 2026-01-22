@@ -5,9 +5,15 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -29,6 +35,8 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,7 +63,7 @@ fun GameScreen(
         }
     }
 
-    var timeLeft by remember { mutableIntStateOf(30) }
+    var timeLeft by remember { mutableIntStateOf(120) }
     var showSuccessDialog by remember { mutableStateOf(false) }
     var showFailedDialog by remember { mutableStateOf(false) }
 
@@ -93,38 +101,121 @@ fun GameScreen(
             )
         }
         if (showSuccessDialog) {
-            AlertDialog(
-                onDismissRequest = { },
-                title = { Text(text = "Congratulations!") },
-                text = { Text(text = "You have completed the puzzle!") },
-                confirmButton = {
-                    Button(onClick = {
-                        showSuccessDialog = false
-                        onGameFinished()
-                    }) {
-                        Text("OK")
-                    }
-                }
-            )
+            SuccessDialog {
+                showSuccessDialog = false
+                onGameFinished()
+            }
         }
         if (showFailedDialog) {
-            AlertDialog(
-                onDismissRequest = { },
-                title = { Text(text = "Sorry!") },
-                text = { Text(text = "You have Failed the puzzle!") },
-                confirmButton = {
-                    Button(onClick = {
-                        showFailedDialog = false
-                        onGameFinished()
-                    }) {
-                        Text("OK")
-                    }
-                }
-            )
+            FailedDialog {
+                showFailedDialog = false
+                onGameFinished()
+            }
         }
 
     }
 }
+@Composable
+fun FailedDialog(
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = { /* block dismiss */ },
+        containerColor = Color.White,
+        shape = RoundedCornerShape(20.dp),
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_failed),
+                    contentDescription = "Failed",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(bottom = 16.dp)
+                )
+
+                Text(
+                    text = "Sorry!",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "You have failed the puzzle!",
+                    fontSize = 16.sp,
+                    color = Color.Gray
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Try Again")
+            }
+        }
+    )
+}
+
+@Composable
+fun SuccessDialog(
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = { },
+        containerColor = Color.White,
+        shape = RoundedCornerShape(20.dp),
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_success),
+                    contentDescription = "Success",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(bottom = 16.dp)
+                )
+
+                Text(
+                    text = "Congratulations!",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "You have completed the puzzle!",
+                    fontSize = 16.sp,
+                    color = Color.Gray
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Continue",
+                    fontSize = 16.sp
+                )
+            }
+        }
+    )
+}
+
 
 @Composable
 fun PuzzlePieceView(
