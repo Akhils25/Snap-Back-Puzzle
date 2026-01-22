@@ -3,7 +3,9 @@ package com.game.snapbackpuzzle.pages
 import android.graphics.Bitmap
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -90,7 +92,9 @@ fun GameScreen(
         showFailedDialog = true
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .fillMaxWidth()) {
 
         Text(
             text = "Time: ${timeLeft}s",
@@ -101,19 +105,34 @@ fun GameScreen(
             fontSize = 18.sp
         )
 
-        Spacer(modifier = Modifier
-            .height(50.dp)
-            .fillMaxWidth())
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .fillMaxWidth()
+                .padding(top = 70.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Spacer(Modifier.height(20.dp))
 
-        pieces.forEach { piece ->
-            PuzzlePieceView(
-                piece = piece,
-                onPlaced = {
-                    if (pieces.all { it.isPlaced }) {
-                        showSuccessDialog = true
-                    }
+            Spacer(modifier = Modifier.height(20.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxSize()
+                    .background(Color(0xFFEFEFEF))
+            ) {
+                pieces.forEach { piece ->
+                    PuzzlePieceView(
+                        piece = piece,
+                        onPlaced = {
+                            if (pieces.all { it.isPlaced }) {
+                                showSuccessDialog = true
+                            }
+                        }
+                    )
                 }
-            )
+            }
         }
         if (showSuccessDialog) {
             SuccessDialog {
