@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.game.snapbackpuzzle.R
 import com.game.snapbackpuzzle.model.PuzzlePiece
 import kotlinx.coroutines.delay
@@ -77,7 +78,8 @@ fun GameScreen(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(top = 30.dp, bottom = 20.dp),
-            color = Color.Black
+            color = Color.Black,
+            fontSize = 18.sp
         )
 
         pieces.forEach { piece ->

@@ -61,7 +61,7 @@ fun HomeScreen(
         ) {
 
             Text(
-                text = "BOX GAME",
+                text = "Snap Back Puzzle",
                 fontSize = 36.sp,
                 fontWeight = FontWeight.ExtraBold,
                 color = Color.White

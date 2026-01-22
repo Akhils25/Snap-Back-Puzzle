@@ -58,7 +58,7 @@ fun GameRoot() {
         }
     }
 }
-enum class AppScreen {
+private enum class AppScreen {
     SPLASH,
     HOME,
     GAME
