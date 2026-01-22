@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
@@ -51,10 +53,21 @@ fun GameScreen(
     onGameFinished: () -> Unit
 ) {
     val context = LocalContext.current
+    val puzzleImages = listOf(
+        R.drawable.ic_snap_game,
+        R.drawable.ic_second_img,
+        R.drawable.ic_third_img,
+        R.drawable.ic_fourth_img,
+        R.drawable.ic_fifth_img,
+        R.drawable.ic_sixth_img
+    )
+    val randomImageRes = remember {
+        puzzleImages.random()
+    }
 
     val imageBitmap = ImageBitmap.imageResource(
         context.resources,
-        R.drawable.ic_snap_game
+        randomImageRes
     )
 
     val pieces = remember {
@@ -63,7 +76,7 @@ fun GameScreen(
         }
     }
 
-    var timeLeft by remember { mutableIntStateOf(120) }
+    var timeLeft by remember { mutableIntStateOf(240) }
     var showSuccessDialog by remember { mutableStateOf(false) }
     var showFailedDialog by remember { mutableStateOf(false) }
 
@@ -89,6 +102,8 @@ fun GameScreen(
             color = Color.Black,
             fontSize = 18.sp
         )
+
+        Spacer(modifier = Modifier.height(50.dp).fillMaxWidth())
 
         pieces.forEach { piece ->
             PuzzlePieceView(

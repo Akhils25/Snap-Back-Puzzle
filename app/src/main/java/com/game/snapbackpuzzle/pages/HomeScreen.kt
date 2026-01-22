@@ -90,7 +90,8 @@ fun HomeScreen(
                 Text(
                     text = "START GAME",
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
                 )
             }
         }
