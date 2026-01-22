@@ -3,7 +3,7 @@ Snap Back Puzzle Game
 A simple drag-and-drop puzzle game built with Jetpack Compose for Android. Players solve a jigsaw-style puzzle by dragging pieces into their correct positions before time runs out.
 
 <img width="150" height="350" alt="Screenshot_20260122_124108" src="https://github.com/user-attachments/assets/8cb44013-7326-467b-973f-4867eff35597" />
-![Uploading Screenshot_20260122_142212.png…]()
+<img width="150" height="350" alt="Screenshot_20260122_142212" src="https://github.com/user-attachments/assets/298005be-e901-49f7-ba0d-cda96da17b6c" />
 <img width="150" height="350" alt="Screenshot_20260122_124137" src="https://github.com/user-attachments/assets/bb4f90ea-2e72-4a01-863e-3e9f7919eeab" />
 
 
