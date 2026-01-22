@@ -4,13 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.game.snapbackpuzzle.pages.GameScreen
+import com.game.snapbackpuzzle.pages.HomeScreen
+import com.game.snapbackpuzzle.pages.SplashScreen
 import com.game.snapbackpuzzle.ui.theme.SnapBackPuzzleTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,29 +20,46 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SnapBackPuzzleTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                GameRoot()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun GameRoot() {
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SnapBackPuzzleTheme {
-        Greeting("Android")
+    var currentScreen by remember { mutableStateOf(AppScreen.SPLASH) }
+
+    when (currentScreen) {
+
+        AppScreen.SPLASH -> {
+            SplashScreen(
+                onFinish = {
+                    currentScreen = AppScreen.HOME
+                }
+            )
+        }
+
+        AppScreen.HOME -> {
+            HomeScreen(
+                onStartGame = {
+                    currentScreen = AppScreen.GAME
+                }
+            )
+        }
+
+        AppScreen.GAME -> {
+            GameScreen(
+                onGameFinished = {
+                    currentScreen = AppScreen.HOME
+                }
+            )
+        }
     }
+}
+enum class AppScreen {
+    SPLASH,
+    HOME,
+    GAME
 }
